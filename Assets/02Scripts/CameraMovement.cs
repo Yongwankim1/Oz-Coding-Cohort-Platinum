@@ -40,6 +40,8 @@ public class CameraMovement : MonoBehaviour
         realCamera = Camera.main.transform;
         dirNormalized = realCamera.localPosition.normalized;
         currentTarget = thirdView;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()

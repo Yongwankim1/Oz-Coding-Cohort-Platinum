@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool isRun; //뛰는 상태
     [SerializeField] bool isJump;//점프 상태
     [SerializeField] bool isGround;//땅에 있는 상태
-
+    [SerializeField] bool isMove = true;
     [SerializeField] float jumpCoolTime;
     
     private void Awake()
@@ -39,8 +39,12 @@ public class PlayerMovement : MonoBehaviour
             Jump();
             m_Animator.SetTrigger("Jump");
         }
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
+        if(isMove)
+        {
+            horizontal = Input.GetAxisRaw("Horizontal");
+            vertical = Input.GetAxisRaw("Vertical");
+        }
+
 
         isRun = Input.GetKey(KeyCode.LeftShift);
 
@@ -82,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(Vector3.up * jumpForced, ForceMode.Impulse);
         isGround = false;
         isJump = true;
+        StartCoroutine(JumpCoolTime());
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -89,7 +94,6 @@ public class PlayerMovement : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            StartCoroutine(JumpCoolTime());
             m_Animator.SetBool("isGround", isGround);
         }
     }

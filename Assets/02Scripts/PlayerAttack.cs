@@ -9,4 +9,3 @@ public class PlayerAttack : MonoBehaviour
         m_animator = GetComponent<Animator>();
     }
 }
-}

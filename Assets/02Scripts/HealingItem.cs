@@ -25,11 +25,29 @@ public class HealingItem : MonoBehaviour, IInteractable
     }
     public void Interact(PlayerInteract player)
     {
-        HealBuff(player);
+        switch(type)
+        {
+            case HealType.Heal:
+                Heal(player);
+                break;
+            case HealType.HealBuff:
+                HealBuff(player);
+                break;
+            case HealType.None:
+                Debug.Log("잘못된 설정");
+                break;
+            default:
+                break;
+        }
     }
-    void Heal()
+    void Heal(PlayerInteract player)
     {
-
+        CharacterHP characterHP = player.GetComponent<CharacterHP>();
+        if (characterHP == null) return;
+        float amount = characterHP.MaxHP * value / 100;
+        characterHP.Heal((int)amount);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     [ContextMenu("HealBuff")]
     void HealBuff(PlayerInteract player)

@@ -52,10 +52,10 @@ public class ItemCatalogManager : MonoBehaviour
         if(string.IsNullOrWhiteSpace(itemID)) return false;
         if(!IsRegisteredItem(itemID)) return false;
 
-        if (!registeredItemData.TryGetValue(itemID, out itemData))
-            return false;
+        if (registeredItemData.TryGetValue(itemID, out itemData))
+            return true;
 
-        return true;
+        return false;
     }
     public int GetMaxStack(string itemID)
     {

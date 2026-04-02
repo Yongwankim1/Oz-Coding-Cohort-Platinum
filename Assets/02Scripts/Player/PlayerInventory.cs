@@ -1,64 +1,84 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [Tooltip("플레이어 가방에 어느 위치에 있는지 그리드로 나타내주는 클래스")]
     [SerializeField] PlayerInventoryGrid inventoryGrid;
+    [SerializeField] int rowCount;
+    [SerializeField] int columnCount;
 
-    [Tooltip("플레이어가 최대 소지할 수 있는 아이템 칸입니다")]
-    [SerializeField] int rowCount; //행 X ->->->
-    [SerializeField] int columnCount;//열 Y ^^^^
+    public int RowCount => rowCount;
+    public int ColumnCount => columnCount;
+    public PlayerInventoryGrid InventoryGrid => inventoryGrid;
 
-    //플레이어가 가지고 있는 아이템
     Dictionary<string, int> itemIdByCount = new Dictionary<string, int>();
-    Stack<ItemData> undoItemData = new Stack<ItemData>();
+    public Dictionary<string, int> ItemIdByCount => itemIdByCount;
+
+    public event Action OnItemAmountChanged;
+
     private void Awake()
     {
+        if (inventoryGrid == null)
+            inventoryGrid = GetComponent<PlayerInventoryGrid>();
+
         Init();
     }
+
     private void Init()
     {
-        if(inventoryGrid == null)
-            inventoryGrid = GetComponent<PlayerInventoryGrid>();
-        inventoryGrid.Init(rowCount, columnCount);
+        if (inventoryGrid != null)
+            inventoryGrid.Initialzed(RowCount, ColumnCount);
+
+        itemIdByCount.Clear();
     }
 
-    public bool AddItem(string itemID, int amount)
+    private void RaiseItemChanged() => OnItemAmountChanged?.Invoke();
+
+    public bool AddItem(string itemID, int amount, out int restAmount)
     {
+        restAmount = -1;
+
         if (string.IsNullOrWhiteSpace(itemID)) return false;
         if (amount <= 0) return false;
         if (!ItemCatalogManager.Instance.TryGetItemData(itemID, out _)) return false;
-        if (!itemIdByCount.ContainsKey(itemID))
-        {
-            itemIdByCount.Add(itemID, amount);
+        if (inventoryGrid == null) return false;
+
+        restAmount = inventoryGrid.SetGrid(itemID, amount);
+        int addedAmount = amount - restAmount;
+
+        if (addedAmount <= 0)
             return true;
-        }
+
+        if (!itemIdByCount.ContainsKey(itemID))
+            itemIdByCount.Add(itemID, addedAmount);
         else
-        {
-            IncreaseItemCount(itemID, amount);
-            return false;
-        }
+            IncreaseItemCount(itemID, addedAmount);
+
+        RaiseItemChanged();
+        return true;
     }
-    
+
     private void IncreaseItemCount(string itemId, int amount)
     {
-        if(amount <= 0) return;
+        if (amount <= 0) return;
+
         if (itemIdByCount.TryGetValue(itemId, out int value))
-        {
             itemIdByCount[itemId] = value + amount;
-        }
     }
+
     private void DecreaseItemCount(string itemId, int amount)
     {
         if (amount <= 0) return;
+
         if (itemIdByCount.TryGetValue(itemId, out int value))
         {
-            itemIdByCount[itemId] = value - amount;
+            int newValue = value - amount;
+
+            if (newValue <= 0)
+                itemIdByCount.Remove(itemId);
+            else
+                itemIdByCount[itemId] = newValue;
         }
     }
-
-
 }

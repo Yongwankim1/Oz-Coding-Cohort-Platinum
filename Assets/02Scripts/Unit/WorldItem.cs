@@ -13,10 +13,10 @@ public class WorldItem : MonoBehaviour, IInteractable
         PlayerInventory inventory = player.GetComponent<PlayerInventory>();
         if (inventory == null) return;
 
-        if (inventory.AddItem(itemObject.ItemData.ItemID, itemAmount))
+        if (inventory.AddItem(itemObject.ItemData.ItemID, itemAmount, out int restAmount))
         {
-            gameObject.SetActive(false);
-            return;
+            itemAmount = restAmount;
+            gameObject.SetActive(restAmount > 0);
         }
 
 

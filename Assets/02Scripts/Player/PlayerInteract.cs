@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerInteract : MonoBehaviour
 {
     [SerializeField] InputAction interactAction;
-    [SerializeField] IInteractable curInteractable;
+    private List<IInteractable> curInteractable = new List<IInteractable>();
 
     private void Awake()
     {
@@ -19,19 +21,39 @@ public class PlayerInteract : MonoBehaviour
     }
     void Interact()
     {
-        if(curInteractable == null)
+        if(curInteractable.Count == 0)
         {
             Debug.Log("상호작용 대상 없음");
             return;
         }
-        curInteractable.Interact(this);
+        IInteractable target = curInteractable[curInteractable.Count - 1];
+        curInteractable.RemoveAt(curInteractable.Count-1);
+        if (target == null)
+        {
+            Debug.Log("상호작용 대상이 비어있음");
+            return;
+        }
+        target.Interact(this);
     }
     private void OnTriggerEnter(Collider other)
-    {
-        curInteractable = other.GetComponent<IInteractable>();
+    { 
+        IInteractable target = other.GetComponent<IInteractable>();
+        if (target == null)
+        {
+            return;
+        }
+        curInteractable.Add(target);
     }
     private void OnTriggerExit(Collider other)
     {
-        curInteractable = null;
+        IInteractable target = other.GetComponent<IInteractable>();
+        if (target == null)
+        {
+            return;
+        }
+        if (curInteractable.Contains(target))
+        {
+            curInteractable.Remove(target);
+        }
     }
 }

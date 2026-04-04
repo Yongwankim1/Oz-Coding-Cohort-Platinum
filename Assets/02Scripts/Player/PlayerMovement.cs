@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] PlayerInputReader inputReader;
     [SerializeField] Animator m_Animator;
     [SerializeField] Camera m_Camera;
     [SerializeField] Rigidbody rb;
@@ -26,9 +27,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        m_Animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
-        m_Camera = Camera.main;
+        if(inputReader == null) inputReader = GetComponent<PlayerInputReader>();
+
+        if(m_Animator == null) m_Animator = GetComponent<Animator>();
+
+        if(rb == null) rb = GetComponent<Rigidbody>();
+
+        if(m_Animator == null) m_Camera = Camera.main;
     }
 
     private void Update()
@@ -39,10 +44,10 @@ public class PlayerMovement : MonoBehaviour
             m_Animator.SetTrigger("Jump");
         }
 
-        if (isMove)
+        if (isMove && inputReader != null)
         {
-            horizontal = Input.GetAxisRaw("Horizontal");
-            vertical = Input.GetAxisRaw("Vertical");
+            horizontal = inputReader.Horizontal;
+            vertical = inputReader.Vertical;
         }
         else
         {

@@ -25,16 +25,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4025437318536645790}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7127858596981449981}
+  m_Father: {fileID: 9115760493109744227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.2, y: -19.5}
+  m_AnchoredPosition: {x: -0.08702393, y: -19.891174}
   m_SizeDelta: {x: 55.8188, y: 13.9547}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3860110976485554923
@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 3284067687134938965}
   - component: {fileID: 6753561064166572935}
   - component: {fileID: 3565588036131575032}
+  - component: {fileID: 4567119072483805988}
   m_Layer: 5
   m_Name: slot
   m_TagString: Untagged
@@ -169,7 +170,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9115760493109744227}
-  - {fileID: 2441261470145425560}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -234,6 +234,19 @@ MonoBehaviour:
   description: 
   amount: 0
   amountText: {fileID: 1340713924852717453}
+--- !u!114 &4567119072483805988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6250759976633799690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aadce100c604684096639b9f87f7269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  dropType: 2
 --- !u!1 &7164755495218853432
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,6 +258,8 @@ GameObject:
   - component: {fileID: 9115760493109744227}
   - component: {fileID: 1206540816440440739}
   - component: {fileID: 1260308010684895411}
+  - component: {fileID: 5856904272695236227}
+  - component: {fileID: 2647261513104261262}
   m_Layer: 5
   m_Name: ItemImage
   m_TagString: Untagged
@@ -263,7 +278,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2441261470145425560}
   m_Father: {fileID: 7127858596981449981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -309,3 +325,29 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5856904272695236227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7164755495218853432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c4a7fef301d57c4aab0f3a4576637f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragAndDrop
+  dragType: 2
+  inventorySlotUI: {fileID: 0}
+--- !u!225 &2647261513104261262
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7164755495218853432}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

@@ -5,16 +5,16 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerInteract : MonoBehaviour
 {
-    [SerializeField] InputAction interactAction;
+    [SerializeField] PlayerInputReader inputReader;
     private List<IInteractable> curInteractable = new List<IInteractable>();
 
     private void Awake()
     {
-        interactAction.Enable();
+        if(inputReader == null) inputReader = GetComponent<PlayerInputReader>();
     }
     private void Update()
     {
-        if(interactAction.WasPerformedThisFrame())
+        if(inputReader.IsInteractPerformedThisFrame)
         {
             Interact();
         }

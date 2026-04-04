@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    [SerializeField] PlayerInputReader inputReader;
+
     [Header("Ä«¸Þ¶ó ÀÎÄª")]
     [SerializeField] Transform currentTarget;
     [SerializeField] Transform firstView;
@@ -48,7 +50,7 @@ public class CameraMovement : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
+        if(inputReader == null) inputReader = GameObject.FindWithTag("Player").GetComponent<PlayerInputReader>();
     }
 
     private void Update()
@@ -60,8 +62,8 @@ public class CameraMovement : MonoBehaviour
             crossHair.SetActive(isFirstView);
         }
 
-        rotX += Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensitivityX;
-        rotY -= Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensitivityY;
+        rotX += inputReader.MouseAxisX * Time.deltaTime * sensitivityX;
+        rotY -= inputReader.MouseAxisY * Time.deltaTime * sensitivityY;
 
         rotY = Mathf.Clamp(rotY, minY, maxY);
         if (rotX >= 360 || rotX <= -360) rotX = 0;

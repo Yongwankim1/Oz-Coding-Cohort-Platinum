@@ -14,6 +14,7 @@ public enum ItemType
     Material,
     Quest
 }
+
 [System.Serializable]
 public struct ItemData
 {
